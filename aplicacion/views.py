@@ -38,3 +38,4 @@ def post_list(request):
     }
 
     return render(request, 'aplicacion/post_list.html', {'thislist': thislist})
+    

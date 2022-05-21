@@ -27,7 +27,7 @@
             {% for key, post in thislist.items %}
             <tr>
                 <td><a target="_blank" href=" {{ post.dominio }}" > {{ post.dominio }}</a></td>
-                <td><img src="{{ post.logo }}" width="100" height="50" alt="me"></td>
+                <td>{{ post.logo }}</td>
                 <td>{{ post.cms }}</td>
                 <td>{{ post.titulo }}</td>
                 <td>{{ post.descripcion }}</td>
@@ -37,8 +37,7 @@
         </table>
 
     </div>
-
-
+    {{ thislist.dominio }}
 
 </div>
 
