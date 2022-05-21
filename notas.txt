@@ -1,2 +1,15 @@
 Reiniciar servidor
 python manage.py runserver
+
+
+
+Subir a github
+git status
+git add --all .
+git status
+git commit -m "Cambie el HTML para la página."
+
+Descarga tu nuevo código a PythonAnywhere y actualiza tu aplicación web
+
+cd ~/puntogal.pythonanywhere.com
+git pull
