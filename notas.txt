@@ -8,6 +8,7 @@ git status
 git add --all .
 git status
 git commit -m "Cambie el HTML para la página."
+git push
 
 Descarga tu nuevo código a PythonAnywhere y actualiza tu aplicación web
 
