@@ -34,14 +34,21 @@
         </div>
       </nav>
       <div class="row  mt-5">
-        <form action="" method="GET">
-    
+        <form method="POST" class="post-form">
+          {% csrf_token %}
+
+          {{ form.errors }} 
+           {{ form.non_field_errors }} 
+            {{ form.errors }} 
+             {{ form.non_field_errors }}
+
+
           <div class="mb-3">
             <label for="exampleFormControlTextarea1" class="form-label">Introduce urls</label>
-            <textarea name="urls" class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
+            <textarea name="text" class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
           </div>
           <p>
-            <input type="submit" value="enviar">
+            <input type="submit" value="Enviar">
             <input type="reset" value="Restaurar">
           </p>
         </form>
@@ -49,6 +56,38 @@
         <p>https://www.cgrl.gal/,https://www.globomatik.com/,https://amtega.xunta.gal/,https://arquivosdegalicia.xunta.gal/,https://www.barciaxalo.gal/,https://www.starwars.com/   </p>
       </div>
     
+
+
+      {{ form.text}}
+
+      <table class="table table-success table-striped">
+        <tr>
+          <th scope="col">Dominio</th>
+          <th scope="col">Logo</th>
+          <th scope="col">Captura</th>
+          <th scope="col">CMS</th>
+          <th scope="col">Título</th>
+          <th scope="col">Descrición</th>
+          <th scope="col">RRSS</th>
+        </tr>
+        {% for key, post in thislist.items %}
+        <tr>
+            <td><a target="_blank" href=" {{ post.dominio }}" > {{ post.dominio }}</a></td>
+            <td><img src="{{ post.logo }}"  height="50" alt="me"></td>
+            <td><img src="{{ post.captura }}" ></td>
+            <td>{{ post.cms }}</td>
+            <td>{{ post.titulo }}</td>
+            <td>{{ post.descripcion }}</td>
+            <td>
+              {% for po in post.rrss  %}
+                {{ po }}
+              {% endfor %}
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
+
+
     
           </div>
     
