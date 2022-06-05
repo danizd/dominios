@@ -93,7 +93,6 @@ toml==0.10.2
 tomli==2.0.1
 twine==4.0.0
 Twisted==22.4.0
-twisted-iocpsupport==1.0.2
 typer==0.4.1
 typing_extensions==4.2.0
 tzdata==2022.1
