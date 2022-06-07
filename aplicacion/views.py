@@ -6,6 +6,8 @@ from urllib.request import urlopen
 import requests
 from inspect import getmembers
 from pprint import pprint
+import pyautogui
+from django.conf import settings
 
 
 # Create your views here.
@@ -48,13 +50,14 @@ def post_list(request):
 
 def formulario(request):
     form = PostForm(request.POST or None)
-    dominio_limpio = 'vacio'
-    logo = 'vacio'
-    cms1 = 'vacio'
-    titulo1 = 'vacio'
-    descripcion1 = 'vacio'
-    captura = ''
-    rrss = ''
+    dominio_limpio = '-'
+    logo =  '/media/default-image.png'
+    cms1 = '-'
+    titulo1 = '-'
+    descripcion1 = '-'
+    captura =  '/media/default-image.png'
+    rrss = '-'
+    infoserver = ''
     if form.is_valid():
         form.errors
         dominio = form.cleaned_data.get('text')
@@ -65,18 +68,20 @@ def formulario(request):
         descripcion1 = getdescripcion(dominio)
         captura = get_thumbnail_url(dominio)
         rrss = get_rrss(dominio)
-
+        rrss = get_rrss(dominio)
+        infoserver =   get_infoserver(dominio)
     else:
         text = 'noooooo'
     thislist = {}
     thislist['dominio1'] = {
     'dominio' : dominio_limpio, 
-    'logo' : logo ,
+    'logo' : logo,
     'cms' : cms1 ,
     'titulo' : titulo1 ,
     'descripcion' : descripcion1,
-    'rrss' : captura ,
+    'captura' : captura,
     'rrss' : rrss ,
+    'infoserver' : infoserver ,
     }
     return render(request, 'aplicacion/formulario.html', {'thislist': thislist})
 
@@ -112,7 +117,7 @@ def getcms(dominio):
 
     if drLcheck.status_code == 403 and "In order to run update.php" in drLcheck.text and "404" not in drLcheck.text:
         cms = 'Drupal 8'
-    elif drLcheck.status_code == 403 and "Access denied. You are not authorized to access this page" in drLcheck.text and "404" not in drLcheck.text:
+    elif drLcheck.status_code == 403 and "Access denied. You are not authorized to access this page" in drLcheck.text:
         cms = 'Drupal 7'
 
     mgRcheck = requests.get(dominio + '/RELEASE_NOTES.txt')
@@ -144,8 +149,16 @@ def getdescripcion(dominio):
     return descripcion
 
 def get_thumbnail_url(dominio):
-    thumbnail = 'https://amtega.xunta.gal//sites/w_amtega/themes/amtega/images/logo.svg'
-    return thumbnail
+    from slugify import slugify
+    from html2image import Html2Image
+
+    source = requests.get(dominio).text
+    html = BeautifulSoup(source, features="html.parser")
+    hti = Html2Image(output_path='media')
+    fileName = slugify(dominio).replace("-html","").replace("www-","").replace("https-","")
+    output = hti.screenshot(url=str(dominio),save_as=f"{fileName}.png")
+    url_image = '/media/'+fileName+'.png'
+    return url_image
 
 def get_rrss(dominio):
     rrss = []
@@ -161,3 +174,15 @@ def get_rrss(dominio):
         if 'instagram.com' in link['href']:
             rrss.append(link['href'])
     return rrss
+
+
+def get_infoserver(dominio):
+    infoserver = {}
+    
+    headers = requests.get(dominio).headers
+    # Headers is a dict so we can use items() function to get it as Key, Value.
+    for key, value in headers.items():
+        infoserver[key] = value
+
+    return infoserver
+

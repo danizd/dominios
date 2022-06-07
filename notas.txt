@@ -1,7 +1,14 @@
-Reiniciar servidor
-python manage.py runserver
+Instalar proyecto
+sudo git  clone https://github.com/danizd/dominios --branch master
+pip install -r requirements.txt
 
+Crear Entorno virtual dentro de la carpeta del proyecto
+python3 -m venv myvenv
+source myvenv/bin/activate
+pip install -r requirements.txt
 
+Iniciar servidor
+python3 manage.py runserver
 
 Subir a github
 git status
