@@ -1,47 +1,11 @@
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <meta name="description" content="">
-  <meta name="author" content="">
-  <link rel="icon" href="favicon.ico">
-
-  <title> Puntogal | Dani Versión </title>
-
-    {# Cargamos la librería #}
-  {% load bootstrap4 %}
-
-  {# CSS Bootstrap #}
-  {% bootstrap_css %}
-
-
-</head>
-<body>
+{% extends 'base.html' %}
 {% block content %}
 
 
-<div class="container-fluid p-5 bg-primary text-white text-center">
-  <h1>PuntoGal</h1>
-  <h2>Analiza ulr´s </h2>
-</div>
 
-<div class="container">
-  <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
-    <div class="container-fluid">
-      <div class="collapse navbar-collapse" id="navbarNav">
-        <ul class="navbar-nav">
-          <li class="nav-item">
-            <a class="nav-link active" aria-current="page" href="#">Home</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="/">Formulario</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="/tabla">Tabla</a>
-          </li>
-        </ul>
-      </div>
-    </div>
-  </nav>
+
+<div class="container-fluid">
+  <h1 class="mt-4">Formulario</h1>
   <div class="mt-5">
     <form method="POST" class="post-form">
       {% csrf_token %}
@@ -63,7 +27,8 @@
     </form>
 
     <p>
-      https://www.cgrl.gal/,https://www.globomatik.com/,https://amtega.xunta.gal/,https://arquivosdegalicia.xunta.gal/,https://www.barciaxalo.gal/,https://www.starwars.com/
+      https://dominio.gal/, https://www.xunta.gal/, https://www.cgrl.gal/, https://amtega.xunta.gal/, https://arquivosdegalicia.xunta.gal/, https://www.barciaxalo.gal/ 
+
     </p>
   </div>
 
@@ -73,19 +38,20 @@
 
 
   {% for key, post in thislist.items %}
-  <div class="card">
+  <div class="col-xl-12">
     <div class="card-body">
       <h5 class="card-title"><a target="_blank" href="http://{{ post.dominio }}"> {{ post.dominio }}</a></h5>
       <h6 class="card-subtitle mb-2 text-muted"></h6>
       <div class="row">
-        <div class="col-sm-6">
+        <div class="col-xl-6">
           <img class="captura" src="http://{{ request.get_host }}{{ post.captura }}" width="100%" alt="me">
         </div>
-        <div class="col-sm-6">
+        <div class="col-xl-6">
           <img class="logo" src="{{ post.logo }}" height="50" alt="me">
           <ul class="list-group list-group-flush">
             <li class="list-group-item"><strong>Titulo: </strong> {{ post.titulo }}</li>
             <li class="list-group-item"><strong>Descripción: </strong> {{ post.descripcion }}</li>
+            <li class="list-group-item"><strong>Palabras clave: </strong> {{ post.keywords }}</li>
             <li class="list-group-item"><strong>CMS: </strong> {{ post.cms }}</li>
             <li class="list-group-item"><strong>RRSS: </strong>   
               {% for po in post.rrss %}
@@ -95,6 +61,20 @@
             {% for key, value in post.infoserver.items %}
             <li class="list-group-item"><strong>{{ key }}: </strong> {{ value }}</li>
             {% endfor %}
+            <li class="list-group-item"><strong>Datos de portada: </strong>   
+              {% for key,po in post.advertools_info.items %}
+                <ul>
+                  <li class="list-group-item"> <strong>{{ key }}:</strong> {{ po }}</li>
+                </ul>
+              {% endfor %}
+            </li>
+            <li class="list-group-item"><strong>Outros datos Whois: </strong></li>
+              {% for key, value in post.activa.items %}
+              <ul>
+                <li class="list-group-item"> {{ value }}</li>
+              </ul>
+              {% endfor %}
+            </li>
           </ul>
       </div>
     </div>
@@ -106,10 +86,3 @@
 </div>
 
 {% endblock %}
-
- 
-{# JS y jQuery Bootstrap #}
-{% bootstrap_javascript jquery='full' %}
-
-</body>
-</html>
