@@ -26,6 +26,7 @@ def formulario(request):
     rrss = '-'
     infoserver = ''
     advertools_info = ''
+    registrosmx = ''
     if form.is_valid():
         form.errors
         dominio = form.cleaned_data.get('text')
@@ -40,6 +41,10 @@ def formulario(request):
         rrss = get_rrss(dominio)
         infoserver =   get_infoserver(dominio)
         advertools_info =   get_advertools_info(dominio)
+        registrosmx  =   get_registrosMX(dominio)
+        parking  =   get_parking(dominio)
+
+        get_parking
     else:
         text = 'noooooo'
     thislist = {}
@@ -55,6 +60,8 @@ def formulario(request):
     'rrss' : rrss ,
     'infoserver' : infoserver ,
     'advertools_info' : advertools_info ,
+    'registrosmx' : registrosmx ,
+    'parking' : parking
     }
     return render(request, 'aplicacion/formulario.html', {'thislist': thislist})
 
@@ -216,6 +223,10 @@ def get_infoserver(dominio):
     infoserver = {}
     
     headers = requests.get(dominio).headers
+
+
+
+
     # Headers is a dict so we can use items() function to get it as Key, Value.
     for key, value in headers.items():
         if key.lower() == 'date':
@@ -302,6 +313,43 @@ def get_advertools_info(dominio):
 
     return datos
 
+def get_registrosMX(dominio):
+    from datetime import datetime, timezone
+    from http.cookiejar import http2time
+    import json
+
+    datos = {}
+    
+    headers = requests.get(dominio).headers
+
+    dominio_limpio = urlparse(dominio).netloc
+    dominio_limpio = '.'.join(dominio_limpio.split('.')[-2:])
+
+    google_dns = 'https://dns.google/resolve?name='+dominio_limpio+'&type=MX'
+    datos_mx = requests.get(google_dns, headers)
+    datos_mx = datos_mx.json()
+    for k, val in datos_mx.items():   
+        datos[k] = val
+    return datos
+
+
+def get_parking(dominio):	
+    '''OLLO non funciona'''
+    import httplib2
+    import string
+    import random
+    h=httplib2.Http(".cache_httplib")
+    h.follow_all_redirects=True
+    try:
+        random_subdomain=randomstring()
+        if(domain[:7]!='http://'):
+            link='http://'+random_subdomain+'.'+domain+'/'
+        resp,content=h.request(link,'GET',headers={'User-Agent':'Mozilla/4.0(compatible; MSTE 5.5; Windows 98; Win 9x 4.90)','Content-Type':'text/plain', 'Referer': 'http://www.google.com/search?hl=fr&q=dictionary+french'})
+        contentLocation=resp['content-location'] 
+        if(contentLocation!=''):
+            return('Positivo')
+    except:	    
+        return('Negativo')
 
 
 def post_list(request):
@@ -340,6 +388,10 @@ def post_list(request):
     }
 
     return render(request, 'aplicacion/post_list.html', {'thislist': thislist})
+
+
+
+
 
 
 def grafico(request):

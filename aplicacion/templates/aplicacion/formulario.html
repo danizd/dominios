@@ -27,7 +27,7 @@
     </form>
 
     <p>
-      https://dominio.gal/, https://www.xunta.gal/, https://www.cgrl.gal/, https://amtega.xunta.gal/, https://arquivosdegalicia.xunta.gal/, https://www.barciaxalo.gal/ 
+      https://dominio.gal/, https://www.xunta.gal/, https://www.cgrl.gal/, https://amtega.xunta.gal/, https://arquivosdegalicia.xunta.gal/, https://www.barciaxalo.gal/, http://campeiras.gal/ (parking) 
 
     </p>
   </div>
@@ -49,9 +49,10 @@
         <div class="col-xl-6">
           <img class="logo" src="{{ post.logo }}" height="50" alt="me">
           <ul class="list-group list-group-flush">
+            <li class="list-group-item"><strong>Dominio en parking: </strong> {{ post.parking }}</li>
             <li class="list-group-item"><strong>Titulo: </strong> {{ post.titulo }}</li>
-            <li class="list-group-item"><strong>Descripción: </strong> {{ post.descripcion }}</li>
-            <li class="list-group-item"><strong>Palabras clave: </strong> {{ post.keywords }}</li>
+            <li class="list-group-item"><strong>Descrición: </strong> {{ post.descripcion }}</li>
+            <li class="list-group-item"><strong>Palabras chave: </strong> {{ post.keywords }}</li>
             <li class="list-group-item"><strong>CMS: </strong> {{ post.cms }}</li>
             <li class="list-group-item"><strong>RRSS: </strong>   
               {% for po in post.rrss %}
@@ -63,6 +64,13 @@
             {% endfor %}
             <li class="list-group-item"><strong>Datos de portada: </strong>   
               {% for key,po in post.advertools_info.items %}
+                <ul>
+                  <li class="list-group-item"> <strong>{{ key }}:</strong> {{ po }}</li>
+                </ul>
+              {% endfor %}
+            </li>
+            <li class="list-group-item"><strong>Rexistros MX: </strong>   
+              {% for key,po in post.registrosmx.items %}
                 <ul>
                   <li class="list-group-item"> <strong>{{ key }}:</strong> {{ po }}</li>
                 </ul>
